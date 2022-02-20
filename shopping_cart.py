@@ -1,4 +1,5 @@
 # shopping_cart.py
+from datetime import datetime
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -37,33 +38,58 @@ def to_usd(my_price):
     return f"${my_price:,.2f}" #> $12,000.71
 
 
+matching_products = []
 # TODO: write some Python code here to produce the desired output
+
+while True:
 
 # Ask for a user input 
 
-product_id = input("please input a product identifier: ")
+    product_id = input("please input a product identifier: ")
 
-print(product_id)
-
-# Look up corresponding products 
+    print(product_id)
 
 
-# Print the product that has an id attribute equal to "0"
 
-matching_products = []
+    if product_id == "DONE" :
+        break
 
-for x in products:
-    #if x == 3:
-    #    ___.append(x)
-    #print(x)
-    #print(x["id"])
-    if str(x["id"]) == str(product_id):
-        # this is a match
-        matching_products.append(x)
+    # Look up corresponding products 
+    # Print the product that has an id attribute equal to "0"
 
-print(matching_products)
-print(type(matching_products))
-print(len(matching_products))
+    for x in products:
+        #if x == 3:
+        #    ___.append(x)
+        #print(x)
+        #print(x["id"])
+        if str(x["id"]) == str(product_id):
+            # this is a match
+            matching_products.append(x)
+
+# print(matching_products)
+# print(type(matching_products))
+# print(len(matching_products))
 # print the name of the matching product
 matching_product = matching_products[0]
-print(matching_product["name"], matching_product["price"])
+print("#> ---------------------------------")
+print("#> GU FRESH FOOD")
+print("#> WWWW.GUFOOD.COM")
+print("#> ---------------------------------")
+# print the date and time
+Time1 = datetime.now()
+Time2 = str(Time1)
+print("#> CHECKOUT AT: ", Time2)
+print("#> SELECTED PRODUCTS")
+total_price = 0.00
+for y in matching_products:
+
+    print("#> ...", y["name"], "(", to_usd((y["price"])), ")")
+    total_price = total_price + y["price"]
+print("#> ---------------------------------")
+print("#> SUBTOTAL:", to_usd(total_price))
+# assume that the tax rate is 8.5% of the total price
+print("#> TAX:", to_usd(total_price*0.085))
+print("#> TOTAL:", to_usd(total_price*1.085))
+print("#> ---------------------------------")
+print("#> THANK YOU, SEE YOU NEXT TIME!!")
+print("#> ---------------------------------")

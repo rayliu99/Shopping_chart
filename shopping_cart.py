@@ -1,6 +1,10 @@
 # shopping_cart.py
 from datetime import datetime
+import os   
 
+# bonus challenge configuring sales tax rate 
+TAX_RATE = os.getenv("TAX_RATE", default="0.085")
+print("The assumed tax rate is", TAX_RATE)
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
     {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
@@ -41,21 +45,24 @@ def to_usd(my_price):
 matching_products = []
 # TODO: write some Python code here to produce the desired output
 
+# Prompt users for valid input
+print("Please enter product ID range from 1 through 20.")
+print("Please ebter 'DONE' when you are finished. ")
+
 while True:
 
 # Ask for a user input 
 
-    product_id = input("please input a product identifier: ")
-
-    print(product_id)
-
-
+    product_id = input("Please input a product identifier: ")
 
     if product_id == "DONE" :
         break
 
     # Look up corresponding products 
     # Print the product that has an id attribute equal to "0"
+    
+    # variable to test if the input is valid or not
+    n = 0
 
     for x in products:
         #if x == 3:
@@ -64,7 +71,15 @@ while True:
         #print(x["id"])
         if str(x["id"]) == str(product_id):
             # this is a match
-            matching_products.append(x)
+            matching_products.append(x)    
+        else:
+            # increment n by 1 if this is not a match
+            n = n + 1
+    # if n reaches 20, then none of the product ID is a match
+    if n == 20:
+        print("Please enter a valid input!")
+
+            
 
 # print(matching_products)
 # print(type(matching_products))
@@ -77,8 +92,7 @@ print("#> WWWW.GUFOOD.COM")
 print("#> ---------------------------------")
 # print the date and time
 Time1 = datetime.now()
-Time2 = str(Time1)
-print("#> CHECKOUT AT: ", Time2)
+print("#> CHECKOUT AT: ", Time1.strftime("%d/%m/%Y %H:%M:%S"))
 print("#> SELECTED PRODUCTS")
 total_price = 0.00
 for y in matching_products:
@@ -88,8 +102,9 @@ for y in matching_products:
 print("#> ---------------------------------")
 print("#> SUBTOTAL:", to_usd(total_price))
 # assume that the tax rate is 8.5% of the total price
-print("#> TAX:", to_usd(total_price*0.085))
-print("#> TOTAL:", to_usd(total_price*1.085))
+TAX_RATE = float(TAX_RATE)
+print("#> TAX:", to_usd(total_price*TAX_RATE))
+print("#> TOTAL:", to_usd(total_price*(1+TAX_RATE)))
 print("#> ---------------------------------")
 print("#> THANK YOU, SEE YOU NEXT TIME!!")
 print("#> ---------------------------------")

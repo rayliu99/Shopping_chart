@@ -1,10 +1,16 @@
 # shopping_cart.py
-from datetime import datetime
-import os   
+import pandas as pd
+from datetime import datetime                   # import the date and time function
+import os                                       # environment variable setup
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 
 # bonus challenge configuring sales tax rate 
 TAX_RATE = os.getenv("TAX_RATE", default="0.085")
 print("The assumed tax rate is", TAX_RATE)
+
+
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
     {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
@@ -96,7 +102,6 @@ print("#> CHECKOUT AT: ", Time1.strftime("%d/%m/%Y %H:%M:%S"))
 print("#> SELECTED PRODUCTS")
 total_price = 0.00
 for y in matching_products:
-
     print("#> ...", y["name"], "(", to_usd((y["price"])), ")")
     total_price = total_price + y["price"]
 print("#> ---------------------------------")
@@ -108,3 +113,56 @@ print("#> TOTAL:", to_usd(total_price*(1+TAX_RATE)))
 print("#> ---------------------------------")
 print("#> THANK YOU, SEE YOU NEXT TIME!!")
 print("#> ---------------------------------")
+
+
+
+#
+#
+#
+# bonus challenge sending emails 
+
+
+SENDGRID_API_KEY = os.getenv("API_VALUE", default="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")
+SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="sl1760@georgetown.edu")
+SENDGRID_TEMPLATE_ID = os.getenv("SENDGRID_TEMPLATE_ID", default="d-bbfbae247dd04b4fb1ec0bcb390a013b")
+
+# this must match the test data structure
+
+#dynamic_list = []
+
+#for orders in matching_products:
+ #      dynamic_list.append(orders["name"])
+
+#for x in dynamic_list:
+    #print(x)
+
+template_data = {
+    "total_price_usd": total_price*(1+TAX_RATE),
+    "human_friendly_timestamp":  Time1.strftime("%d/%m/%Y %H:%M:%S"),
+    "products":str(matching_products["name"])
+} # or construct this dictionary dynamically based on the results of some other process :-D
+
+
+
+str(x["id"])
+
+
+
+client = SendGridAPIClient(SENDGRID_API_KEY)
+print("CLIENT:", type(client))
+
+message = Mail(from_email=SENDER_ADDRESS, to_emails=SENDER_ADDRESS)
+message.template_id = SENDGRID_TEMPLATE_ID
+message.dynamic_template_data = template_data
+print("MESSAGE:", type(message))
+
+try:
+    response = client.send(message)
+    print("RESPONSE:", type(response))
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)
+
+except Exception as err:
+    print(type(err))
+    print(err)

@@ -6,6 +6,7 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
 
+
 # bonus challenge configuring sales tax rate 
 TAX_RATE = os.getenv("TAX_RATE", default="0.085")
 print("The assumed tax rate is", TAX_RATE)
@@ -33,7 +34,6 @@ products = [
     {"id":19, "name": "Gluten Free Quinoa Three Cheese & Mushroom Blend", "department": "dry goods pasta", "aisle": "grains rice dried goods", "price": 3.99},
     {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25}
 ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
-
 
 def to_usd(my_price):
     """
@@ -128,23 +128,16 @@ SENDGRID_TEMPLATE_ID = os.getenv("SENDGRID_TEMPLATE_ID", default="d-bbfbae247dd0
 
 # this must match the test data structure
 
-#dynamic_list = []
+dynamic_list = []
 
-#for orders in matching_products:
- #      dynamic_list.append(orders["name"])
-
-#for x in dynamic_list:
-    #print(x)
+for orders in matching_products:
+      dynamic_list.append(orders["name"])
 
 template_data = {
     "total_price_usd": total_price*(1+TAX_RATE),
     "human_friendly_timestamp":  Time1.strftime("%d/%m/%Y %H:%M:%S"),
-    "products":str(matching_products["name"])
+    "products":dynamic_list
 } # or construct this dictionary dynamically based on the results of some other process :-D
-
-
-
-str(x["id"])
 
 
 

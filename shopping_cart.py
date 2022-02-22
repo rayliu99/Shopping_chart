@@ -101,12 +101,14 @@ Time1 = datetime.now()
 print("#> CHECKOUT AT: ", Time1.strftime("%d/%m/%Y %H:%M:%S"))
 print("#> SELECTED PRODUCTS")
 total_price = 0.00
+# print the ordered products and price
+# also store the total price in this loop
 for y in matching_products:
     print("#> ...", y["name"], "(", to_usd((y["price"])), ")")
     total_price = total_price + y["price"]
 print("#> ---------------------------------")
 print("#> SUBTOTAL:", to_usd(total_price))
-# assume that the tax rate is 8.5% of the total price
+# use the tax rate detined earlier, either by user or by default
 TAX_RATE = float(TAX_RATE)
 print("#> TAX:", to_usd(total_price*TAX_RATE))
 print("#> TOTAL:", to_usd(total_price*(1+TAX_RATE)))
@@ -127,7 +129,7 @@ SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="sl1760@georgetown.edu")
 SENDGRID_TEMPLATE_ID = os.getenv("SENDGRID_TEMPLATE_ID", default="d-bbfbae247dd04b4fb1ec0bcb390a013b")
 
 # this must match the test data structure
-
+# a list that stores the product names
 dynamic_list = []
 
 for orders in matching_products:
